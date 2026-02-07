@@ -45,3 +45,15 @@ exports.getAllUrls = async (host) => {
 
   return urlsWithQR;
 };
+
+exports.getOriginalUrl = async (shortCode) => {
+  const url = await urlModel.findByCode(shortCode);
+
+  if (!url) {
+    throw new Error("URL not found");
+  }
+
+  await urlModel.incrementClicks(shortCode);
+
+  return url.original_url;
+};

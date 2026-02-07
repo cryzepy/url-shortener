@@ -21,6 +21,18 @@ exports.create = async (req, res, next) => {
   }
 };
 
+exports.redirect = async (req, res, next) => {
+  try {
+    const { code } = req.params;
+
+    const originalUrl = await urlService.getOriginalUrl(code);
+
+    res.redirect(originalUrl);
+  } catch (error) {
+    next(error);
+  }
+};
+
 exports.getAll = async (req, res, next) => {
   try {
     const urls = await urlService.getAllUrls();
